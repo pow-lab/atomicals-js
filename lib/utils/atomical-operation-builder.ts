@@ -76,7 +76,7 @@ export const BASE_BYTES = 10.5;
 export const INPUT_BYTES_BASE = 57.5;
 export const OUTPUT_BYTES_BASE = 43;
 export const EXCESSIVE_FEE_LIMIT: number = 1000000; // Limit to 1/100 of a BTC for now
-export const MAX_SEQUENCE = 0xffffffff;
+export const MAX_SEQUENCE = 0x000000ff;
 
 interface WorkerOut {
     finalCopyData: AtomicalsPayload;
@@ -734,7 +734,7 @@ export class AtomicalOperationBuilder {
 
                 // Handle messages from workers
                 worker.on("message", async (message: WorkerOut) => {
-                    console.log("Solution found, try composing the transaction...");
+                    console.log("Solution found, try composing the transaction...", message);
 
                     if (!isWorkDone) {
                         isWorkDone = true;
@@ -1092,6 +1092,9 @@ export class AtomicalOperationBuilder {
     }
 
     async broadcastWithRetries(rawtx: string): Promise<any> {
+        console.log('broadcastWithRetries', rawtx);
+        process.exit(1);
+        return;
         let attempts = 0;
         let result = null;
         do {
